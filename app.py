@@ -35,6 +35,18 @@ df_plot = df[[valeur_x, valeur_y]].dropna() # on retire les Nan
 x_type = 'quantitative' if pd.api.types.is_numeric_dtype(df_plot[valeur_x]) else 'nominal'  # differencier les type num et str
 y_type = 'quantitative' if pd.api.types.is_numeric_dtype(df_plot[valeur_y]) else 'nominal'
 
+st.title("Affichage de la matrice de corrélation")
+
+if st.checkbox("Afficher la matrice de corrélation"):
+    # On ne garde que les colonnes numériques pour la corrélation
+    numeric_df = df_plot.select_dtypes(include='number')
+    if not numeric_df.empty:
+        corr_matrix = numeric_df.corr()
+        st.write("Matrice de corrélation :")
+        st.dataframe(corr_matrix)
+    else:
+        st.write("Pas de colonnes numériques pour calculer la corrélation.")
+
 
 # --- Création du graphique avec Altair ---
 if graph == "nuage de points":
